@@ -126,6 +126,7 @@ function renderAllShapes() {
     leftArm.matrix.rotate(45, 0, 0, 1);
     leftArm.matrix.scale(0.25, 0.7, 0.5);
     leftArm.render();
+
 }
 
 function convertCoords(ev) {
