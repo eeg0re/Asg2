@@ -82,10 +82,19 @@ function renderAllShapes() {
     // Clear <canvas>
     gl.clear(gl.COLOR_BUFFER_BIT);
 
-    let len = g_shapesList.length;
-    for(let i = 0; i < len; i++){
-        g_shapesList[i].render();
-    }
+    // -------- shapes list ----------------
+    // commented out temporarily -----------
+    // let len = g_shapesList.length;
+    // for(let i = 0; i < len; i++){
+    //     g_shapesList[i].render();
+    // }
+    // -------------------------------------
+
+    drawTriangle3D([-1.0,0.0,0.0, -0.5, -1.0, 0.0, 0.0, 0.0, 0.0]);
+
+    let body = new Cube();
+    body.color = [0.0, 0.0, 1.0, 1.0];
+    body.render();
 }
 
 function convertCoords(ev) {
@@ -220,19 +229,22 @@ function main() {
     setupHTMLElements();
 
     // Register function (event handler) to be called on a mouse press
-    canvas.onmousedown = function (ev) {
-        click(ev);
-    };
+    
+    // canvas.onmousedown = function (ev) {
+    //     click(ev);
+    // };
 
-    canvas.onmousemove = function (ev) {
-        if (ev.buttons === 1) {
-            click(ev);
-        }
-    }
+    // canvas.onmousemove = function (ev) {
+    //     if (ev.buttons === 1) {
+    //         click(ev);
+    //     }
+    // }
 
     // Specify the color for clearing <canvas>
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
     // Clear <canvas>
     gl.clear(gl.COLOR_BUFFER_BIT);
+
+    renderAllShapes();
 }

@@ -51,3 +51,27 @@ function drawTriangle(vertices){
 
     gl.drawArrays(gl.TRIANGLES, 0, n);
 }
+
+function drawTriangle3D(vertices){
+    let n = 3 // num vertices
+
+    // create buffer object
+    let vertexBuffer = gl.createBuffer();
+    if(!vertexBuffer){
+        console.log("Failed to create the buffer object");
+        return -1;
+    }
+
+    // bind buffer object to target
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    // write data into the buffer object
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.DYNAMIC_DRAW);
+
+    // assign buffer object to a_Position variable 
+    gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
+    
+    // enable assignment to a_Position variable
+    gl.enableVertexAttribArray(a_Position);
+
+    gl.drawArrays(gl.TRIANGLES, 0, n);
+}
