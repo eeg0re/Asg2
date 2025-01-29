@@ -245,7 +245,7 @@ function setupHTMLElements(){
     document.getElementById("blueSlider").addEventListener("mouseup", function () { g_selectedColor[2] = this.value / 100; updateColor(); } );
     document.getElementById("sizeSlider").addEventListener("mouseup", function () { g_selectedSize = this.value } );
     document.getElementById("circleSegmentSlider").addEventListener("mouseup", function () { g_selectedSegments = this.value} );
-    document.getElementById("angleSlider").addEventListener("mouseup", function () { g_globalAngle = this.value; renderAllShapes(); } );
+    document.getElementById("angleSlider").addEventListener("mousemove", function () { g_globalAngle = this.value; renderAllShapes(); } );
 
     // buttons 
     document.getElementById("clear").onclick = function () { g_shapesList = []; renderAllShapes(); };
