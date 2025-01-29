@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CSE 160 Assignment 1</title>
+  </head>
+
+  <body onload="main()">
+    <canvas id="webgl" width="400" height="400">
+    Please use a browser that supports "canvas"
+    </canvas>
+
+    <div id="UI">
+        <button type="button" id="clear">Clear</button>
+        <p></p>
+        <button type="button" id="pointBttn">Square</button>
+        <button type="button" id="triBttn">Triangle</button>
+        <button type="button" id="circleBttn">Circle</button>
+        <p></p>
+        Red <input type="range" min="0" max="100" value="100" class="slider" id="redSlider">
+        Green <input type="range" min="0" max="100" value="100" class="slider" id="greenSlider">
+        Blue <input type="range" min="0" max="100" value="100" class="slider" id="blueSlider">
+        <p></p>
+        Size <input type="range" min="5" max="40" value="15" class="slider" id="sizeSlider">
+        Circle Segment Number <input type="range" min="8" max="25" value="8" class="slider" id="circleSegmentSlider">
+        <p></p>
+        <button type="button" id="pictureBttn">Draw a cool picture</button>
+    </div>
+    <canvas id="colorCanvas" width="20" height="20"></canvas>
+    <div id="student info">
+      <p>Name: Igor Bessa</p>
+      <p>Student ID: 1869612</p>
+      <p>Email: ibessa@ucsc.edu</p>
+      <p>Submission notes: 
+      </p>
+    </div>
+   
+    <script src="src/Point.js"></script>
+    <script src="src/Triangle.js"></script>
+    <script src="src/Circle.js"></script>
+    <script src="lib/webgl-utils.js"></script>
+    <script src="lib/webgl-debug.js"></script>
+    <script src="lib/cuon-utils.js"></script>
+    <script src="lib/cuon-matrix-cse160.js"></script>
+    <script src="src/BlockyAnimal.js"></script>
+  </body>
+</html>
