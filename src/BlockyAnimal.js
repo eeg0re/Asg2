@@ -2,10 +2,9 @@
 // Vertex shader program
 var VSHADER_SOURCE = `
   attribute vec4 a_Position;
-  uniform float u_Size;
+  uniform mat4 u_ModelMatrix;
   void main() {
-    gl_Position = a_Position;
-    gl_PointSize = u_Size;
+    gl_Position = u_ModelMatrix * a_Position;
   }`;
 
 // Fragment shader program
@@ -25,6 +24,7 @@ let gl;
 let a_Position;
 let u_FragColor;
 let u_Size;
+let u_ModelMatrix;
 
 // UI variables
 let g_selectedSize = 10; 
@@ -71,9 +71,10 @@ function connectVariablesToGLSL() {
         console.log("Failed to get the storage location of u_FragColor");
         return;
     }
-    u_Size = gl.getUniformLocation(gl.program, "u_Size");
-    if(!u_Size){
-        console.log("Failed to get the storage location of u_Size");
+
+    u_ModelMatrix = gl.getUniformLocation(gl.program, "u_ModelMatrix");
+    if(!u_ModelMatrix){
+        console.log("Failed to get the storage location of u_ModelMatrix");
         return;
     }
 }
@@ -94,7 +95,16 @@ function renderAllShapes() {
 
     let body = new Cube();
     body.color = [0.0, 0.0, 1.0, 1.0];
+    body.matrix.translate(-0.25, -0.5, 0.0);
+    body.matrix.scale(0.5, 1.0, 0.5);
     body.render();
+
+    let leftArm = new Cube();
+    leftArm.color = [1.0, 1.0, 0.0, 1.0];
+    leftArm.matrix.translate(0.7, 0.0, 0.0);
+    leftArm.matrix.rotate(45, 0, 0, 1);
+    leftArm.matrix.scale(0.25, 0.7, 0.5);
+    leftArm.render();
 }
 
 function convertCoords(ev) {
