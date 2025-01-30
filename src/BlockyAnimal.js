@@ -35,7 +35,10 @@ let g_selectedSize = 10;
 let g_selectedType = POINT;
 let g_selectedColor = [1.0, 1.0, 1.0, 1.0];
 let g_selectedSegments = 10;
-let g_globalAngle = 0.0;
+let g_globalAngleX = 0.0;
+let g_globalAngleY = 0.0;
+let g_armAngle = 0.0;
+let g_lowerArmAngle = 0.0;
 
 function setupWebGL() {
     // Retrieve <canvas> element
@@ -111,21 +114,33 @@ function renderAllShapes() {
     //drawTriangle3D([-1.0,0.0,0.0, -0.5, -1.0, 0.0, 0.0, 0.0, 0.0]);
 
     // pass the matrix to rotate the shape
-    let globalRotMat = new Matrix4().rotate(g_globalAngle, 0, 1, 0);
+    let globalRotMat = new Matrix4().rotate(g_globalAngleX, g_globalAngleY, 1, 0);
     gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
 
     let body = new Cube();
     body.color = [0.0, 0.0, 1.0, 1.0];
-    body.matrix.translate(-0.25, -0.5, 0.0);
-    body.matrix.scale(0.5, 1.0, 0.5);
+    body.matrix.translate(-0.25, -0.75, 0.0);
+    body.matrix.scale(0.5, 0.3, 0.5);
     body.render();
 
     let leftArm = new Cube();
     leftArm.color = [1.0, 1.0, 0.0, 1.0];
-    leftArm.matrix.translate(0.7, 0.0, 0.0);
-    leftArm.matrix.rotate(45, 0, 0, 1);
+    leftArm.matrix.setTranslate(0, -0.5, 0.0);
+    leftArm.matrix.rotate(-5, 1, 0, 0);
+    leftArm.matrix.rotate(-g_armAngle, 0, 0, 1);
+    let leftArmMatrix = new Matrix4(leftArm.matrix);    // save the matrix before we scale it
     leftArm.matrix.scale(0.25, 0.7, 0.5);
+    leftArm.matrix.translate(-0.5, 0, 0);
     leftArm.render();
+    
+    let topArm = new Cube();
+    topArm.color = [0.8, 1.0, 0.5, 1.0];
+    topArm.matrix = leftArmMatrix;
+    topArm.matrix.translate(0.0, 0.65, 0.0);
+    topArm.matrix.rotate(g_lowerArmAngle, 1, 0, 0);
+    topArm.matrix.scale(0.3, 0.3, 0.3);
+    topArm.matrix.translate(-0.5, 0, -0.001);
+    topArm.render();
 
 }
 
@@ -165,73 +180,6 @@ function click(ev) {
     renderAllShapes();
 }
 
-function convertCoordinatesForTriangle(x1, y1, x2, y2, x3, y3){
-    let scaler = 15
-    return [x1/scaler, y1/scaler, x2/scaler, y2/scaler, x3/scaler, y3/scaler];
-}
-
-function drawPicture(){
-    g_shapesList = [];
-    let blue = [0.275, 0.608, 1, 1];
-    let skinTone = [0.769, 0.635, 0.459, 1];
-    let grey = [0.361, 0.361, 0.361, 1];
-
-    let triangles = [
-        { "vertices": convertCoordinatesForTriangle(0,0, -1,1, 1,1), "color": blue},    // bottom nose
-        { "vertices": convertCoordinatesForTriangle(-1,1, 0,3, 1, 1), "color": blue },  // top nose
-        { "vertices": convertCoordinatesForTriangle(-1,1, -1,3, 0,3), "color": [0, 0, 0, 1] },          // left of nose
-        { "vertices": convertCoordinatesForTriangle(1,1, 1,3, 0,3), "color": [0, 0, 0, 1] },            // right of nose
-        { "vertices": convertCoordinatesForTriangle(-1,3, -3,3, -3,4), "color": [1, 1, 1, 1] },         // left eye
-        { "vertices": convertCoordinatesForTriangle(1,3, 3,3, 3,4), "color": [1, 1, 1, 1] },            // right eye
-        // connect eyes to cowl
-        { "vertices": convertCoordinatesForTriangle(-3,3, -3,4, -4,3), "color": blue }, // left eye to cowl
-        { "vertices": convertCoordinatesForTriangle(3,3, 3,4, 4,3), "color": blue },    // right eye to cowl
-        { "vertices": convertCoordinatesForTriangle(-1,3, 0,4, 1, 3), "color": blue },       // btwn eyes
-        { "vertices": convertCoordinatesForTriangle(-4,3, -4,4, -3,4), "color": blue },
-        { "vertices": convertCoordinatesForTriangle(4,3, 4,4, 3,4), "color": blue },
-        { "vertices": convertCoordinatesForTriangle(1,1, 1,3, 3,3), "color": blue },
-        { "vertices": convertCoordinatesForTriangle(-1,1, -1,3, -3,3), "color": blue },
-        { "vertices": convertCoordinatesForTriangle(1,1, 1,3, 3,3), "color": blue },
-        { "vertices": convertCoordinatesForTriangle(-3,4 , 0,6, 3,4 ), "color": blue }, // top of head
-        { "vertices": convertCoordinatesForTriangle(-1,1, -3,1, -3,3), "color": blue }, // under left eye
-        { "vertices": convertCoordinatesForTriangle(1,1, 3,1, 3,3), "color": blue },    // under right eye
-        { "vertices": convertCoordinatesForTriangle(-3,1, -3,3, -4,3), "color": blue }, // left of head
-        { "vertices": convertCoordinatesForTriangle(3,1, 3,3, 4,3), "color": blue },    // right of head
-        { "vertices": convertCoordinatesForTriangle(-3,5, -4,5, -3,7), "color": blue }, // left bat ear pt 1
-        { "vertices": convertCoordinatesForTriangle(-4,5, -4,7, -3,7), "color": blue }, // left bat ear pt 2
-        { "vertices": convertCoordinatesForTriangle(-3,7 , -4,7, -3,10), "color": blue }, // left bat ear pt 3
-        { "vertices": convertCoordinatesForTriangle(-4,4, -4,5, -3, 5), "color": blue }, // left bat ear pt 5
-        { "vertices": convertCoordinatesForTriangle(-3,4, -4,4, -3, 5), "color": blue }, // left bat ear pt 6
-        { "vertices": convertCoordinatesForTriangle(-3,4, -3,5, -2, 5), "color": blue },  // left bat ear pt 7
-        { "vertices": convertCoordinatesForTriangle(3,5, 3,7, 4,5), "color": blue },    // right bat ear pt 1
-        { "vertices": convertCoordinatesForTriangle(4,5, 4,7, 3,7), "color": blue },    // right bat ear pt 2
-        { "vertices": convertCoordinatesForTriangle(3,7, 4,7, 3,10), "color": blue },   // right bat ear pt 3
-        { "vertices": convertCoordinatesForTriangle(4,4, 4,5, 3, 5), "color": blue},    // right bat ear pt 5
-        { "vertices": convertCoordinatesForTriangle(3,4, 4,4, 3, 5), "color": blue},    // right bat ear pt 6
-        { "vertices": convertCoordinatesForTriangle(3,4, 3,5, 2, 5), "color": blue},    // right bat ear pt 7
-        { "vertices": convertCoordinatesForTriangle(-2,1, -3,1, -2.5,-2), "color": blue}, // left bottom cowl
-        { "vertices": convertCoordinatesForTriangle(2,1, 3,1, 2.5,-2), "color": blue},    // right bottom cowl
-        { "vertices": convertCoordinatesForTriangle(-2.5,-2, 0,-3, 2.5,-2), "color": skinTone},    // bottom cowl/face
-        { "vertices": convertCoordinatesForTriangle(-4,1, -4,-7, -5,-7), "color": blue},   // left neck piece
-        { "vertices": convertCoordinatesForTriangle(-1,-4, -1.5,-4, -1, -7), "color": blue },  // left neck shadow
-        { "vertices": convertCoordinatesForTriangle(-4,-6, -4,-7, -13.5, -7), "color": blue},  // left cape piece
-        { "vertices": convertCoordinatesForTriangle(4,1, 4,-7, 5,-7), "color": blue},    // right neck piece
-        { "vertices": convertCoordinatesForTriangle(1,-4, 1.5,-4, 1, -7), "color": blue },  // right neck shadow
-        { "vertices": convertCoordinatesForTriangle(4,-6, 4,-7, 13.5, -7), "color": blue},  // right cape piece
-        { "vertices": convertCoordinatesForTriangle(-1,-9, -3,-9, -1,-10), "color": grey},  // left collar bone
-        { "vertices": convertCoordinatesForTriangle(1,-9, 3,-9, 1,-10), "color": grey},  // right collar bone
-
-    ];     // will hold the triangle info for each triangle in the picture
-
-    let tri;
-    for (let i = 0; i < triangles.length; i++){
-        tri = new Triangle(triangles[i]["vertices"]);
-        tri.position = [0.0, 0.0, 0.0, 0.0];
-        tri.color = triangles[i]["color"];
-        g_shapesList.push(tri);
-    }
-    renderAllShapes();
-}
 
 function updateColor(){
     colorgl.clearColor(g_selectedColor[0], g_selectedColor[1], g_selectedColor[2], g_selectedColor[3]); 
@@ -241,20 +189,12 @@ function updateColor(){
 function setupHTMLElements(){
    
     // sliders
-    document.getElementById("redSlider").addEventListener("mouseup", function () { g_selectedColor[0] = this.value / 100; updateColor(); } );
-    document.getElementById("greenSlider").addEventListener("mouseup", function () { g_selectedColor[1] = this.value / 100; updateColor(); } );
-    document.getElementById("blueSlider").addEventListener("mouseup", function () { g_selectedColor[2] = this.value / 100; updateColor(); } );
-    document.getElementById("sizeSlider").addEventListener("mouseup", function () { g_selectedSize = this.value } );
-    document.getElementById("circleSegmentSlider").addEventListener("mouseup", function () { g_selectedSegments = this.value} );
-    document.getElementById("angleSlider").addEventListener("mousemove", function () { g_globalAngle = this.value; renderAllShapes(); } );
-
-    // buttons 
-    document.getElementById("clear").onclick = function () { g_shapesList = []; renderAllShapes(); };
-    document.getElementById("pointBttn").onclick = function () { g_selectedType = POINT; };
-    document.getElementById("triBttn").onclick = function () { g_selectedType = TRIANGLE; };
-    document.getElementById("circleBttn").onclick = function() { g_selectedType = CIRCLE; };
-    document.getElementById("pictureBttn").onclick = function () { drawPicture(); };
+    document.getElementById("angleSliderX").addEventListener("mousemove", function () { g_globalAngleX = this.value; renderAllShapes(); } );
+    document.getElementById("angleSliderY").addEventListener("mousemove", function () { g_globalAngleY = this.value; renderAllShapes(); } );
+    document.getElementById("armSlider").addEventListener("mousemove", function () { g_armAngle = this.value; renderAllShapes(); } );
+    document.getElementById("lowerArmSlider").addEventListener("mousemove", function () { g_lowerArmAngle = this.value; renderAllShapes(); } );
 }
+
 
 function main() {
     setupWebGL();
