@@ -100,6 +100,12 @@ function connectVariablesToGLSL() {
     gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
 }
 
+function updateAnimationAngles(){
+    if(g_animationOn){
+        g_armAngle = (45*Math.sin(g_seconds));
+    }
+}
+
 function renderAllShapes() {
     // Clear <canvas>
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -128,12 +134,7 @@ function renderAllShapes() {
     leftArm.color = [1.0, 1.0, 0.0, 1.0];
     leftArm.matrix.setTranslate(0, -0.5, 0.0);
     leftArm.matrix.rotate(-5, 1, 0, 0);
-    if(g_animationOn){
-        leftArm.matrix.rotate(45*Math.sin(g_seconds), 0, 0);
-    }
-    else{
-        leftArm.matrix.rotate(-g_armAngle, 0, 0, 1);
-    }
+    leftArm.matrix.rotate(-g_armAngle, 0, 0, 1);
     
     let leftArmMatrix = new Matrix4(leftArm.matrix);    // save the matrix before we scale it
     leftArm.matrix.scale(0.25, 0.7, 0.5);
@@ -212,7 +213,10 @@ let g_seconds = performance.now()/1000.0 - g_startTime;
 function tick(){
     g_seconds = performance.now()/1000.0 - g_startTime;
     console.log(g_seconds);
+    updateAnimationAngles();
+
     renderAllShapes();
+
     requestAnimationFrame(tick);
 }
 
