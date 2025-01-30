@@ -39,6 +39,7 @@ let g_globalAngleX = 0.0;
 let g_globalAngleY = 0.0;
 let g_armAngle = 0.0;
 let g_lowerArmAngle = 0.0;
+let g_animationOn = false;
 
 function setupWebGL() {
     // Retrieve <canvas> element
@@ -127,8 +128,13 @@ function renderAllShapes() {
     leftArm.color = [1.0, 1.0, 0.0, 1.0];
     leftArm.matrix.setTranslate(0, -0.5, 0.0);
     leftArm.matrix.rotate(-5, 1, 0, 0);
-    //leftArm.matrix.rotate(-g_armAngle, 0, 0, 1);
-    leftArm.matrix.rotate(45*Math.sin(g_seconds), 0, 0);
+    if(g_animationOn){
+        leftArm.matrix.rotate(45*Math.sin(g_seconds), 0, 0);
+    }
+    else{
+        leftArm.matrix.rotate(-g_armAngle, 0, 0, 1);
+    }
+    
     let leftArmMatrix = new Matrix4(leftArm.matrix);    // save the matrix before we scale it
     leftArm.matrix.scale(0.25, 0.7, 0.5);
     leftArm.matrix.translate(-0.5, 0, 0);
@@ -194,6 +200,10 @@ function setupHTMLElements(){
     document.getElementById("angleSliderY").addEventListener("mousemove", function () { g_globalAngleY = this.value; renderAllShapes(); } );
     document.getElementById("armSlider").addEventListener("mousemove", function () { g_armAngle = this.value; renderAllShapes(); } );
     document.getElementById("lowerArmSlider").addEventListener("mousemove", function () { g_lowerArmAngle = this.value; renderAllShapes(); } );
+
+    // Buttons 
+    document.getElementById("animationBttn").onclick = function () { g_animationOn = true };
+    document.getElementById("animationOffBttn").onclick = function () { g_animationOn = false };
 }
 
 let g_startTime = performance.now()/1000.0;
