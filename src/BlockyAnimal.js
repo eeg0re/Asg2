@@ -130,10 +130,10 @@ function renderAllShapes() {
     body.matrix.scale(0.5, 0.3, 0.5);
     body.render();
     
-    let ear = new Cone(8);
+    let ear = new Pyramid();
     ear.color = [1.0, 0.0, 0.0, 1.0];
-    ear.matrix.translate(-0.25, -0.25, 0.0);
-    ear.matrix.rotate(90, 0, 1, 0);
+    // ear.matrix.translate(-0.25, -0.25, 0.0);
+    // ear.matrix.rotate(90, 0, 1, 0);
     ear.render();
 
     // let leftArm = new Cube();
@@ -194,7 +194,7 @@ let g_seconds = performance.now()/1000.0 - g_startTime;
 
 function tick(){
     g_seconds = performance.now()/1000.0 - g_startTime;
-    console.log(g_seconds);
+    //console.log(g_seconds);
     updateAnimationAngles();
 
     renderAllShapes();
