@@ -6,6 +6,7 @@ class Cone {
         this.size = 10.0;
         this.segments = 8;
         this.matrix = new Matrix4();
+        this.matrix.setRotate(270, 1, 0, 0);
     }
 
     render(){
