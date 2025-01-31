@@ -125,14 +125,18 @@ function renderAllShapes() {
     gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
 
     let body = new Cube();
-    body.color = [0.0, 0.0, 1.0, 1.0];
-    body.matrix.translate(-0.25, -0.75, 0.0);
-    body.matrix.scale(0.5, 0.3, 0.5);
+    body.color = [0.314, 0.0, 0.78, 1.0];
+    body.matrix.translate(-0.4, -0.5, 0.0);
+    let bodyMatrix = new Matrix4(body.matrix);
+    body.matrix.scale(0.75, 0.75, 0.75);
     body.render();
     
     let ear = new Cone();
     ear.color = [1.0, 0.0, 0.0, 1.0];
-    // ear.matrix.translate(-0.25, -0.25, 0.0);
+    ear.matrix = bodyMatrix;
+    ear.matrix.setRotate(270, 1, 0, 0);
+    ear.matrix.scale(2.5, 5, 0.95);
+    ear.matrix.translate(0.1, -0.05, 0.5);
     // ear.matrix.rotate(90, 0, 1, 0);
     ear.render();
 
