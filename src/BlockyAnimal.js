@@ -129,26 +129,31 @@ function renderAllShapes() {
     body.matrix.translate(-0.25, -0.75, 0.0);
     body.matrix.scale(0.5, 0.3, 0.5);
     body.render();
-
-    let leftArm = new Cube();
-    leftArm.color = [1.0, 1.0, 0.0, 1.0];
-    leftArm.matrix.setTranslate(0, -0.5, 0.0);
-    leftArm.matrix.rotate(-5, 1, 0, 0);
-    leftArm.matrix.rotate(-g_armAngle, 0, 0, 1);
     
-    let leftArmMatrix = new Matrix4(leftArm.matrix);    // save the matrix before we scale it
-    leftArm.matrix.scale(0.25, 0.7, 0.5);
-    leftArm.matrix.translate(-0.5, 0, 0);
-    leftArm.render();
+    let ear = new Cone(8);
+    ear.color = [1.0, 0.0, 0.0, 1.0];
+    ear.matrix.translate(-0.25, -0.25, 0.0);
+    ear.matrix.rotate(90, 0, 1, 0);
+    ear.render();
+    // let leftArm = new Cube();
+    // leftArm.color = [1.0, 1.0, 0.0, 1.0];
+    // leftArm.matrix.setTranslate(0, -0.5, 0.0);
+    // leftArm.matrix.rotate(-5, 1, 0, 0);
+    // leftArm.matrix.rotate(-g_armAngle, 0, 0, 1);
     
-    let topArm = new Cube();
-    topArm.color = [0.8, 1.0, 0.5, 1.0];
-    topArm.matrix = leftArmMatrix;
-    topArm.matrix.translate(0.0, 0.65, 0.0);
-    topArm.matrix.rotate(g_lowerArmAngle, 1, 0, 0);
-    topArm.matrix.scale(0.3, 0.3, 0.3);
-    topArm.matrix.translate(-0.5, 0, -0.001);
-    topArm.render();
+    // let leftArmMatrix = new Matrix4(leftArm.matrix);    // save the matrix before we scale it
+    // leftArm.matrix.scale(0.25, 0.7, 0.5);
+    // leftArm.matrix.translate(-0.5, 0, 0);
+    // leftArm.render();
+    
+    // let topArm = new Cube();
+    // topArm.color = [0.8, 1.0, 0.5, 1.0];
+    // topArm.matrix = leftArmMatrix;
+    // topArm.matrix.translate(0.0, 0.65, 0.0);
+    // topArm.matrix.rotate(g_lowerArmAngle, 1, 0, 0);
+    // topArm.matrix.scale(0.3, 0.3, 0.3);
+    // topArm.matrix.translate(-0.5, 0, -0.001);
+    // topArm.render();
 
 }
 
