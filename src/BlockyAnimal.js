@@ -130,15 +130,30 @@ function renderAllShapes() {
     let bodyMatrix = new Matrix4(body.matrix);
     body.matrix.scale(0.75, 0.75, 0.75);
     body.render();
+
+    let rightEar = new Pyramid();
+    rightEar.color = [1.0, 0.0, 0.0, 1.0];
+    rightEar.matrix = bodyMatrix;
+    rightEar.matrix.translate(0.1, 1, 0.25);
+    rightEar.matrix.rotate(45, 40, 1, 0);
+    rightEar.matrix.scale(0.5, 0.5, 0.5);
+    rightEar.render();
     
-    let ear = new Cone();
-    ear.color = [1.0, 0.0, 0.0, 1.0];
-    ear.matrix = bodyMatrix;
-    ear.matrix.setRotate(270, 1, 0, 0);
-    ear.matrix.scale(2.5, 5, 0.95);
-    ear.matrix.translate(0.1, -0.05, 0.5);
-    // ear.matrix.rotate(90, 0, 1, 0);
-    ear.render();
+    // let rightEar = new Cone();
+    // rightEar.color = [1.0, 0.0, 0.0, 1.0];
+    // rightEar.matrix = bodyMatrix;
+    // rightEar.matrix.translate(0.1, 0.6, 0.25);
+    // rightEar.matrix.rotate(-45, 40, 1, 0);
+    // rightEar.matrix.scale(2.5, 7, 1);
+    // rightEar.render();
+
+    // let leftEar = new Cone();
+    // leftEar.color = [1.0, 0.0, 0.0, 1.0];
+    // leftEar.matrix = bodyMatrix;
+    // leftEar.matrix.setRotate(270, 1, -1, 0);
+    // leftEar.matrix.scale(4, 7, 1);
+    // leftEar.matrix.translate(-0.1, -0.05, 0.25);
+    // leftEar.render();
 
     // let leftArm = new Cube();
     // leftArm.color = [1.0, 1.0, 0.0, 1.0];

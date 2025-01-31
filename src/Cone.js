@@ -6,13 +6,14 @@ class Cone {
         this.size = 10.0;
         this.segments = 8;
         this.matrix = new Matrix4();
-        this.matrix.setRotate(270, 1, 0, 0);
+        // this.matrix.rotate(270, 1, 0, 0);
     }
 
     render(){
         let xyz = this.position;
         let rgba = this.color;
         let size = this.size;
+        let colorMult = 1.0;
 
         gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
 
@@ -32,8 +33,10 @@ class Cone {
             gl.uniform4f(u_FragColor, rgba[0]*0.7, rgba[1]*0.7, rgba[2]*0.7, rgba[3]);
             drawTriangle3D([xyz[0], xyz[1], xyz[2], point1[0], point1[1], point1[2], point2[0], point2[1], point2[2]]); // circular base
             
-            gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
+            gl.uniform4f(u_FragColor, rgba[0] * colorMult, rgba[1] * colorMult, rgba[2] * colorMult, rgba[3]);
             drawTriangle3D([xyz[0], xyz[1], xyz[2]+0.5, point1[0], point1[1], point1[2], point2[0], point2[1], point2[2]]);
+
+            colorMult -= 0.05;
 
         }
     }
