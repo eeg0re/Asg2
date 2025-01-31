@@ -130,7 +130,7 @@ function renderAllShapes() {
     body.matrix.scale(0.5, 0.3, 0.5);
     body.render();
     
-    let ear = new Pyramid();
+    let ear = new Cone();
     ear.color = [1.0, 0.0, 0.0, 1.0];
     // ear.matrix.translate(-0.25, -0.25, 0.0);
     // ear.matrix.rotate(90, 0, 1, 0);
