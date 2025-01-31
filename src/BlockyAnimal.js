@@ -135,6 +135,7 @@ function renderAllShapes() {
     ear.matrix.translate(-0.25, -0.25, 0.0);
     ear.matrix.rotate(90, 0, 1, 0);
     ear.render();
+
     // let leftArm = new Cube();
     // leftArm.color = [1.0, 1.0, 0.0, 1.0];
     // leftArm.matrix.setTranslate(0, -0.5, 0.0);
@@ -164,34 +165,10 @@ function convertCoords(ev) {
 
     x = ((x - rect.left) - canvas.width / 2) / (canvas.width / 2);
     y = (canvas.height / 2 - (y - rect.top)) / (canvas.height / 2);
-
     return [x, y];
 }
 
 let g_shapesList = [];
-
-function click(ev) {
-    // convert the x and y coordinates to match the canvas's coordinate system
-    let [x, y] = convertCoords(ev);
-
-    // create and store the new point based on what we're drawing
-    let point;
-    if (g_selectedType == POINT){
-        point = new Point();
-    }
-    else if (g_selectedType == TRIANGLE){
-        point = new Triangle();
-    }
-    else{
-        point = new Circle(g_selectedSegments);
-    }
-    point.position = [x, y, 0.0, 0.0];
-    point.size = g_selectedSize;
-    point.color = g_selectedColor.slice();
-    g_shapesList.push(point);
-
-    renderAllShapes();
-}
 
 
 function updateColor(){
@@ -229,18 +206,6 @@ function main() {
     setupWebGL();
     connectVariablesToGLSL();
     setupHTMLElements();
-
-    // Register function (event handler) to be called on a mouse press
-    
-    // canvas.onmousedown = function (ev) {
-    //     click(ev);
-    // };
-
-    // canvas.onmousemove = function (ev) {
-    //     if (ev.buttons === 1) {
-    //         click(ev);
-    //     }
-    // }
 
     // Specify the color for clearing <canvas>
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
