@@ -40,6 +40,7 @@ let g_globalAngleY = 0.0;
 let g_armAngle = -40.0;
 let g_lowerArmAngle = 0.0;
 let g_animationOn = false;
+let g_legAngle = 0.0;
 
 // colors for gengar
 let purple = [0.314, 0.0, 0.78, 1.0];
@@ -105,7 +106,7 @@ function connectVariablesToGLSL() {
 
 function updateAnimationAngles(){
     if(g_animationOn){
-        g_armAngle = (45*Math.sin(g_seconds));
+        g_lowerArmAngle = (15*Math.sin(g_seconds));
     }
 }
 
@@ -205,6 +206,26 @@ function renderAllShapes() {
     leftEye.matrix.rotate(-90, 0, 0, 1);
     leftEye.render();
 
+    let leftLegMat;
+    let leftLeg = new Cube();
+    leftLeg.color = [1,0,1,1];
+    leftLeg.matrix = new Matrix4(bodyMatrix);
+    leftLeg.matrix.translate(0.0001, -0.2, 0.2);
+    leftLeg.matrix.rotate(g_legAngle, -1, 0, 0);
+    leftLegMat = new Matrix4(leftLeg.matrix);   // copy this matrix for the next joint
+    leftLeg.matrix.scale(0.25, 0.5, 0.25);
+    leftLeg.render();
+
+    let rightLegMat;
+    let rightLeg = new Cube();
+    rightLeg.color = [1,0,1,1];
+    rightLeg.matrix = new Matrix4(bodyMatrix);
+    rightLeg.matrix.translate(0.49, -0.2, 0.2);
+    rightLeg.matrix.rotate(g_legAngle, -1, 0, 0);
+    rightLegMat = new Matrix4(rightLeg.matrix);   // copy this matrix for the next joint
+    rightLeg.matrix.scale(0.25, 0.5, 0.25);
+    rightLeg.render();
+
 
 }
 
@@ -233,6 +254,7 @@ function setupHTMLElements(){
     document.getElementById("angleSliderY").addEventListener("mousemove", function () { g_globalAngleY = this.value; renderAllShapes(); } );
     document.getElementById("armSlider").addEventListener("mousemove", function () { g_armAngle = this.value; renderAllShapes(); } );
     document.getElementById("lowerArmSlider").addEventListener("mousemove", function () { g_lowerArmAngle = this.value; renderAllShapes(); } );
+    document.getElementById("legSlider").addEventListener("mousemove", function () { g_legAngle = this.value; renderAllShapes(); } );
 
     // Buttons 
     document.getElementById("animationBttn").onclick = function () { g_animationOn = true };
