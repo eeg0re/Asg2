@@ -37,9 +37,12 @@ let g_selectedColor = [1.0, 1.0, 1.0, 1.0];
 let g_selectedSegments = 10;
 let g_globalAngleX = 0.0;
 let g_globalAngleY = 0.0;
-let g_armAngle = 0.0;
+let g_armAngle = -40.0;
 let g_lowerArmAngle = 0.0;
 let g_animationOn = false;
+
+// colors for gengar
+let purple = [0.314, 0.0, 0.78, 1.0];
 
 function setupWebGL() {
     // Retrieve <canvas> element
@@ -121,39 +124,71 @@ function renderAllShapes() {
     //drawTriangle3D([-1.0,0.0,0.0, -0.5, -1.0, 0.0, 0.0, 0.0, 0.0]);
 
     // pass the matrix to rotate the shape
-    let globalRotMat = new Matrix4().rotate(g_globalAngleX, g_globalAngleY, 1, 0);
+    let globalRotMat = new Matrix4();
+    globalRotMat.rotate(g_globalAngleX, 0, 1, 0);
+    globalRotMat.rotate(g_globalAngleY, 1, 0, 0);
     gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
 
     let body = new Cube();
-    body.color = [0.314, 0.0, 0.78, 1.0];
+    body.color = purple;
     body.matrix.translate(-0.4, -0.5, 0.0);
     let bodyMatrix = new Matrix4(body.matrix);
     body.matrix.scale(0.75, 0.75, 0.75);
     body.render();
 
     let rightEar = new Pyramid();
-    rightEar.color = [1.0, 0.0, 0.0, 1.0];
-    rightEar.matrix = bodyMatrix;
-    rightEar.matrix.translate(0.1, 1, 0.25);
-    rightEar.matrix.rotate(45, 40, 1, 0);
-    rightEar.matrix.scale(0.5, 0.5, 0.5);
+    rightEar.color = purple;
+    rightEar.matrix = new Matrix4(bodyMatrix);
+    rightEar.matrix.translate(0.0, 0.7, 0.4);
+    rightEar.matrix.rotate(45, 50, -40, 0);
+    rightEar.matrix.scale(0.5, 0.7, 0.5);
     rightEar.render();
-    
-    // let rightEar = new Cone();
-    // rightEar.color = [1.0, 0.0, 0.0, 1.0];
-    // rightEar.matrix = bodyMatrix;
-    // rightEar.matrix.translate(0.1, 0.6, 0.25);
-    // rightEar.matrix.rotate(-45, 40, 1, 0);
-    // rightEar.matrix.scale(2.5, 7, 1);
-    // rightEar.render();
 
-    // let leftEar = new Cone();
-    // leftEar.color = [1.0, 0.0, 0.0, 1.0];
-    // leftEar.matrix = bodyMatrix;
-    // leftEar.matrix.setRotate(270, 1, -1, 0);
-    // leftEar.matrix.scale(4, 7, 1);
-    // leftEar.matrix.translate(-0.1, -0.05, 0.25);
-    // leftEar.render();
+    let leftEar = new Pyramid();
+    leftEar.color = purple;
+    leftEar.matrix = new Matrix4(bodyMatrix);
+    leftEar.matrix.translate(0.3, 0.7, 0.4);
+    leftEar.matrix.rotate(55, 70, 30, 0);
+    leftEar.matrix.scale(0.5, 0.7, 0.5);
+    leftEar.render();
+
+    let rightArmMat;
+    let leftArmMat;
+
+    let rightArm = new Cube();
+    rightArm.color = purple;
+    rightArm.matrix = new Matrix4(bodyMatrix);
+    rightArm.matrix.translate(0.75, 0.5, 0.2);
+    rightArm.matrix.rotate(-g_armAngle, 0, 0, 1);
+    rightArmMat = new Matrix4(rightArm.matrix);
+    rightArm.matrix.scale(0.25, -0.2, 0.25);
+    rightArm.render();
+
+    let leftArm = new Cube();
+    leftArm.color = purple;
+    leftArm.matrix = new Matrix4(bodyMatrix);
+    leftArm.matrix.translate(0, 0.5, 0.2);
+    leftArm.matrix.rotate(g_armAngle, 0, 0, 1);
+    leftArmMat = new Matrix4(leftArm.matrix);
+    leftArm.matrix.scale(-0.25, -0.2, 0.25);
+    leftArm.render();
+
+    let lowerRightArm = new Cube();
+    lowerRightArm.color = purple;
+    lowerRightArm.matrix = new Matrix4(rightArmMat);
+    lowerRightArm.matrix.translate(0.25, -0.2, 0.25);
+    lowerRightArm.matrix.rotate(g_lowerArmAngle, 1, 0, 0);
+    lowerRightArm.matrix.scale(-0.25, -0.2, -0.25);
+    lowerRightArm.render();
+
+    let lowerLeftArm = new Cube();
+    lowerLeftArm.color = purple;
+    lowerLeftArm.matrix = new Matrix4(leftArmMat);
+    lowerLeftArm.matrix.translate(0, -0.2, 0.25);
+    lowerLeftArm.matrix.rotate(g_lowerArmAngle, 1, 0, 0);
+    lowerLeftArm.matrix.scale(-0.25, -0.2, -0.25);
+    lowerLeftArm.render();
+
 
     // let leftArm = new Cube();
     // leftArm.color = [1.0, 1.0, 0.0, 1.0];
