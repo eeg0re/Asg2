@@ -44,6 +44,7 @@ let g_legAngle = 0.0;
 
 // colors for gengar
 let purple = [0.314, 0.0, 0.78, 1.0];
+let darkPurple = [0.314 * 0.8, 0.0 * 0.8, 0.78 *0.8, 1.0];
 
 function setupWebGL() {
     // Retrieve <canvas> element
@@ -148,10 +149,39 @@ function renderAllShapes() {
     let leftEar = new Pyramid();
     leftEar.color = purple;
     leftEar.matrix = new Matrix4(bodyMatrix);
-    leftEar.matrix.translate(0.3, 0.7, 0.4);
+    leftEar.matrix.translate(0.3, 0.7, 0.6);
     leftEar.matrix.rotate(55, 70, 30, 0);
     leftEar.matrix.scale(0.5, 0.7, 0.5);
     leftEar.render();
+
+    let topSpike1 = new Pyramid();
+    topSpike1.color = darkPurple;
+    topSpike1.matrix = new Matrix4(bodyMatrix);
+    topSpike1.matrix.translate(0.15, 0.7, 0.5);
+    topSpike1.matrix.scale(0.25,0.15, 0.25);
+    topSpike1.render();
+
+    let topSpike2 = new Pyramid();
+    topSpike2.color = darkPurple;
+    topSpike2.matrix = new Matrix4(bodyMatrix);
+    topSpike2.matrix.translate(0.35, 0.7, 0.5);
+    topSpike2.matrix.scale(0.25,0.15, 0.25);
+    topSpike2.render();
+
+    let topSpike3 = new Pyramid();
+    topSpike3.color = darkPurple;
+    topSpike3.matrix = new Matrix4(bodyMatrix);
+    topSpike3.matrix.translate(0.25, 0.7, 0.4);
+    topSpike3.matrix.scale(0.25,0.15, 0.25);
+    topSpike3.render();
+
+    let smile = new Pyramid();
+    smile.color = [1, 1, 1, 1];
+    smile.matrix = new Matrix4(bodyMatrix);
+    smile.matrix.translate(0.1, 0.3, -0.01);
+    smile.matrix.scale(0.5, 0.15, -0.01);
+    smile.matrix.rotate(180, 180, 0, 1);
+    smile.render();
 
     let rightArmMat;
     let leftArmMat;
@@ -198,6 +228,13 @@ function renderAllShapes() {
     rightEye.matrix.rotate(90, 0, 0, 1);
     rightEye.render();
 
+    let rightPupil = new Cube();
+    rightPupil.color = [0.0, 0.0, 0.0, 1.0];
+    rightPupil.matrix = new Matrix4(bodyMatrix);
+    rightPupil.matrix.translate(0.61, 0.42, -0.06);
+    rightPupil.matrix.scale(0.03, 0.05, 0.05);
+    rightPupil.render();
+
     let leftEye = new Pyramid();
     leftEye.color = [1.0, 0.0, 0.0, 1.0];
     leftEye.matrix = new Matrix4(bodyMatrix);
@@ -206,9 +243,16 @@ function renderAllShapes() {
     leftEye.matrix.rotate(-90, 0, 0, 1);
     leftEye.render();
 
+    let leftPupil = new Cube();
+    leftPupil.color = [0.0, 0.0, 0.0, 1.0];
+    leftPupil.matrix = new Matrix4(bodyMatrix);
+    leftPupil.matrix.translate(0.1, 0.42, -0.06);
+    leftPupil.matrix.scale(0.03, 0.05, 0.05);
+    leftPupil.render();
+
     let leftLegMat;
     let leftLeg = new Cube();
-    leftLeg.color = [1,0,1,1];
+    leftLeg.color = darkPurple;
     leftLeg.matrix = new Matrix4(bodyMatrix);
     leftLeg.matrix.translate(0.0001, -0.2, 0.2);
     leftLeg.matrix.rotate(g_legAngle, -1, 0, 0);
@@ -218,14 +262,17 @@ function renderAllShapes() {
 
     let rightLegMat;
     let rightLeg = new Cube();
-    rightLeg.color = [1,0,1,1];
+    rightLeg.color = darkPurple;
     rightLeg.matrix = new Matrix4(bodyMatrix);
     rightLeg.matrix.translate(0.49, -0.2, 0.2);
-    rightLeg.matrix.rotate(g_legAngle, -1, 0, 0);
+    rightLeg.matrix.rotate(g_legAngle, 1, 0, 0);
     rightLegMat = new Matrix4(rightLeg.matrix);   // copy this matrix for the next joint
-    rightLeg.matrix.scale(0.25, 0.5, 0.25);
+    rightLeg.matrix.scale(0.25, 0.3, 0.25);
     rightLeg.render();
-
+    
+    let leftFoot = new Cube();
+    leftFoot.color = [];
+    leftFoot.matrix = new Matrix4(leftLegMat);
 
 }
 
