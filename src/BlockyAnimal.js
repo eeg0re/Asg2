@@ -108,6 +108,7 @@ function connectVariablesToGLSL() {
 function updateAnimationAngles(){
     if(g_animationOn){
         g_lowerArmAngle = (15*Math.sin(g_seconds));
+        g_armAngle = (10*Math.sin(g_seconds));
     }
 }
 
@@ -265,14 +266,18 @@ function renderAllShapes() {
     rightLeg.color = darkPurple;
     rightLeg.matrix = new Matrix4(bodyMatrix);
     rightLeg.matrix.translate(0.49, -0.2, 0.2);
-    rightLeg.matrix.rotate(g_legAngle, 1, 0, 0);
+    rightLeg.matrix.rotate(-g_legAngle, -1, 0, 0);
     rightLegMat = new Matrix4(rightLeg.matrix);   // copy this matrix for the next joint
     rightLeg.matrix.scale(0.25, 0.3, 0.25);
     rightLeg.render();
     
-    let leftFoot = new Cube();
-    leftFoot.color = [];
-    leftFoot.matrix = new Matrix4(leftLegMat);
+    let tail = new Cone();
+    tail.color = darkPurple;
+    tail.matrix = new Matrix4(bodyMatrix);
+    tail.matrix.translate(0.4, 0.1, 0.7);
+    tail.matrix.scale(1.5, 1.5, 0.6);
+    tail.render();
+
 
 }
 
