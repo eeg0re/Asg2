@@ -109,6 +109,7 @@ function updateAnimationAngles(){
     if(g_animationOn){
         g_lowerArmAngle = (15*Math.sin(g_seconds));
         g_armAngle = (10*Math.sin(g_seconds));
+        g_legAngle = (15*Math.sin(g_seconds));
     }
 }
 
@@ -318,7 +319,7 @@ let g_seconds = performance.now()/1000.0 - g_startTime;
 
 function tick(){
     g_seconds = performance.now()/1000.0 - g_startTime;
-    //console.log(g_seconds);
+    console.log(g_seconds);
     updateAnimationAngles();
 
     renderAllShapes();
